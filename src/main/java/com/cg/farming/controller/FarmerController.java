@@ -47,6 +47,7 @@ public class FarmerController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
 
+    	logger.info(signUpDto);
         // add check for username exists in a DB
         if(farmerRepository.existsByUsername(signUpDto.getUsername())){
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);

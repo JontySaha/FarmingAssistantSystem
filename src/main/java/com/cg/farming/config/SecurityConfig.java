@@ -29,11 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private FarmerServiceImpl farmerDetailsService;
     
-//    @Autowired
-//    private SupplierServiceImpl supplierDetailsService;
-//    
-//    @Autowired
-//    private AdminServiceImpl adminDetailsService;
+    @Autowired
+    private SupplierServiceImpl supplierDetailsService;
+    
+    @Autowired
+    private AdminServiceImpl adminDetailsService;
 
     private static Logger logger = LogManager.getLogger();
     
@@ -56,42 +56,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 	
-//	@Bean
-//    public DaoAuthenticationProvider authenticationProvider1() {
-//        DaoAuthenticationProvider auth1 = new DaoAuthenticationProvider();
-//        auth1.setUserDetailsService(supplierDetailsService);
-//        auth1.setPasswordEncoder(passwordEncoder());
-//        return auth1;
-//    }
-//	
-//	protected void configure1(AuthenticationManagerBuilder auth1) throws Exception {
-//        auth1.authenticationProvider(authenticationProvider1());
-//    }
+	@Bean
+    public DaoAuthenticationProvider authenticationProvider1() {
+        DaoAuthenticationProvider auth1 = new DaoAuthenticationProvider();
+        auth1.setUserDetailsService(supplierDetailsService);
+        auth1.setPasswordEncoder(passwordEncoder());
+        return auth1;
+    }
 	
-//	@Bean
-//    public DaoAuthenticationProvider authenticationProvider2() {
-//        DaoAuthenticationProvider auth2 = new DaoAuthenticationProvider();
-//        auth2.setUserDetailsService(adminDetailsService);
-//        auth2.setPasswordEncoder(passwordEncoder());
-//        return auth2;
-//    }
-//	
-//	protected void configureAdmin(AuthenticationManagerBuilder auth2) throws Exception {
-//		auth2.authenticationProvider(authenticationProvider1());
-//    }
+	protected void configure1(AuthenticationManagerBuilder auth1) throws Exception {
+        auth1.authenticationProvider(authenticationProvider1());
+    }
+	
+	@Bean
+    public DaoAuthenticationProvider authenticationProvider2() {
+        DaoAuthenticationProvider auth2 = new DaoAuthenticationProvider();
+        auth2.setUserDetailsService(adminDetailsService);
+        auth2.setPasswordEncoder(passwordEncoder());
+        return auth2;
+    }
+	
+	protected void configureAdmin(AuthenticationManagerBuilder auth2) throws Exception {
+		auth2.authenticationProvider(authenticationProvider2());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-	        .csrf().disable()
-	        .authorizeRequests()
-//	        .antMatchers("/*").hasRole("FARMER")
-//	        .antMatchers("/**").permitAll()
-//	        .antMatchers("/auth/signup/*").hasRole("ADMIN")
-	        .anyRequest()
-	        .authenticated()
-	        .and()
-	        .httpBasic();
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
     }
 
 
